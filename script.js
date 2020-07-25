@@ -3,14 +3,27 @@ let subtract = (operand1,operand2) => operand1 - operand2;
 let multiply = (operand1,operand2) => operand1 * operand2;
 let divide = (operand1,operand2) => operand1 / operand2;
 
-let operandKeys = [0,1,2,3,4,5,6,7,8,9]
+let operandKeys = [0,1,2,3,4,5,6,7,8,9,"."]
 let operatorKeys = ["+","-","/","*"]
 let operand1;
 let operand2;
 let operator;
 
 let display = document.querySelector('#display')
-let addToDisplay = (e) => display.textContent += e.target.textContent;
+
+let checkForDecimal = (e) => {
+    let decimalLocation = display.textContent.lastIndexOf(".");
+    if(e.target.textContent == "." &&
+     decimalLocation > -1 &&
+    (!operand1 || decimalLocation > operand1.length)){
+        return 1;
+    };
+};
+
+let addToDisplay = (e) => {
+    if(checkForDecimal(e)){return;}
+    display.textContent += e.target.textContent;
+};
 
 let clearDisplay = () => display.textContent = "";
 
@@ -58,12 +71,13 @@ let itemInArray = (targetItem,array) => array.find(item => item == targetItem);
 let clickKey = id => document.getElementById(id).click();
 
 let logKey = (e) => {
+    e.preventDefault();
     let key = e.key;
     if(itemInArray(key,operandKeys)){clickKey(key)};
     if(itemInArray(key,operatorKeys)){clickKey(key)};
-    if(key == "Enter" || key == "="){clickKey("=")}
-    if(key == "Delete"){clickKey("CLR")}
-    if(key == "Backspace"){clickKey(key)}
+    if(key == "Enter" || key == "="){clickKey("=")};
+    if(key == "Delete"){clickKey("CLR")};
+    if(key == "Backspace"){clickKey(key)};
 };
 
 document.addEventListener("keydown",logKey);
