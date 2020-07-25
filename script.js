@@ -63,6 +63,13 @@ let logKey = (e) => {
     if(itemInArray(key,operatorKeys)){clickKey(key)};
     if(key == "Enter" || key == "="){clickKey("=")}
     if(key == "Delete"){clickKey("CLR")}
+    if(key == "Backspace"){clickKey(key)}
+};
+
+document.addEventListener("keydown",logKey);
+
+let removeCharFromDisplay = () => {
+    display.textContent = display.textContent.slice(0,-1);
 };
 
 let operands = document.querySelectorAll('.operand');
@@ -74,7 +81,8 @@ operators.forEach(operator => operator.addEventListener("click",addOperator));
 let equals = document.getElementById("=");
 equals.addEventListener("click",handleOperate)
 
-document.addEventListener("keydown",logKey);
+let backspace  = document.getElementById("Backspace");
+backspace.addEventListener("click",removeCharFromDisplay)
 
 let clear = document.querySelector('#CLR');
 clear.addEventListener("click", function(){
