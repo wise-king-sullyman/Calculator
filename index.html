@@ -6,28 +6,39 @@
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <h1 id="display"></h1>
-    <div id="operatorsDiv">
-        <button id="+" class="operator">+</button>
-        <button id="-" class="operator">-</button>
-        <button id="/" class="operator">/</button>
-        <button id="*" class="operator">x</button>
-        <button id="=">=</button>
-        <button id="CLR">CLR</button>
-        <button id="Backspace">Backspace</button>
-    </div>
-    <div id="operandsDiv">
-        <button id="0" class="operand">0</button>
-        <button id="1" class="operand">1</button>
-        <button id="2" class="operand">2</button>
-        <button id="3" class="operand">3</button>
-        <button id="4" class="operand">4</button>
-        <button id="5" class="operand">5</button>
-        <button id="6" class="operand">6</button>
-        <button id="7" class="operand">7</button>
-        <button id="8" class="operand">8</button>
-        <button id="9" class="operand">9</button>
-        <button id="." class="operand">.</button>
+    <div id="main">
+        <p id="display"></p>
+        <div id="buttonsDiv">
+            <div id="column1" class="column">
+                <button id="7" class="operand">7</button>
+                <button id="4" class="operand">4</button>
+                <button id="1" class="operand">1</button>
+                <button id="0" class="operand">0</button>
+                </div>
+            <div id="column2" class="column">
+                <button id="8" class="operand">8</button>
+                <button id="5" class="operand">5</button>
+                <button id="2" class="operand">2</button>
+                <button id="00" class="operand">00</button>
+                </div>
+            <div id="column3" class="column">
+                <button id="9" class="operand">9</button>
+                <button id="6" class="operand">6</button>
+                <button id="3" class="operand">3</button>
+                <button id="." class="operand">.</button>
+            </div>
+            <div id="column4" class="column">
+                <button id="/" class="operator">&divide;</button>
+                <button id="*" class="operator">x</button>
+                <button id="-" class="operator">-</button>
+                <button id="+" class="operator">+</button>
+                </div>
+            <div id="column5" class="column">
+                <button id="Backspace">Back</button>
+                <button id="CLR">Clear<R/button>
+                <button id="equals">=</button>
+            </div>
+        </div>
     </div>
   <script src="script.js"></script>
 </body>

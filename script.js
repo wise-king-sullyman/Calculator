@@ -3,7 +3,7 @@ let subtract = (operand1,operand2) => operand1 - operand2;
 let multiply = (operand1,operand2) => operand1 * operand2;
 let divide = (operand1,operand2) => operand1 / operand2;
 
-let operandKeys = [0,1,2,3,4,5,6,7,8,9,"."]
+let operandKeys = [00,0,1,2,3,4,5,6,7,8,9,"."]
 let operatorKeys = ["+","-","/","*"]
 let operand1;
 let operand2;
@@ -22,6 +22,7 @@ let checkForDecimal = (e) => {
 
 let addToDisplay = (e) => {
     if(checkForDecimal(e)){return;}
+    if(display.textContent.length > 12){return;}
     display.textContent += e.target.textContent;
 };
 
@@ -39,7 +40,7 @@ let addOperator = (e) => {
         display.textContent = operand1
     }else {operand1 = display.textContent;}
     addToDisplay(e)
-    operator = e.target.textContent;
+    operator = e.target.id;
 };
 
 let operate = () => { 
@@ -50,7 +51,7 @@ let operate = () => {
              return add(operand1,operand2);
         case "-":
             return subtract(operand1,operand2);      
-        case "x":
+        case "*":
             return multiply(operand1,operand2);  
         case "/":
             return divide(operand1,operand2);
@@ -61,7 +62,19 @@ let operate = () => {
 
 let handleOperate = () => {
     if(operator) {
-        display.textContent = operate();
+        let operationResult = operate();
+        if(operationResult == "Infinity"){
+            alert("No Breaking the Universe Allowed! (Can't Divide by 0")
+            clearDisplay()
+            clearOps()
+            return
+        }
+        if(operationResult.toString().length > 12){
+            display.textContent = operationResult.toFixed(12);
+            clearOps()
+            return
+        }
+        display.textContent = operationResult;
         clearOps();
     }
 }
@@ -75,7 +88,8 @@ let logKey = (e) => {
     let key = e.key;
     if(itemInArray(key,operandKeys)){clickKey(key)};
     if(itemInArray(key,operatorKeys)){clickKey(key)};
-    if(key == "Enter" || key == "="){clickKey("=")};
+    if(key == 0){clickKey("0")}
+    if(key == "Enter" || key == "="){clickKey("equals")};
     if(key == "Delete"){clickKey("CLR")};
     if(key == "Backspace"){clickKey(key)};
 };
@@ -92,7 +106,7 @@ operands.forEach(operand => operand.addEventListener("click",addToDisplay));
 let operators = document.querySelectorAll('.operator');
 operators.forEach(operator => operator.addEventListener("click",addOperator));
 
-let equals = document.getElementById("=");
+let equals = document.getElementById("equals");
 equals.addEventListener("click",handleOperate)
 
 let backspace  = document.getElementById("Backspace");
