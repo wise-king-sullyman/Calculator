@@ -43,7 +43,7 @@ button {
     font-size: x-large;
     box-sizing: border-box;
     border: none;
-    transition: .2s;
+    transition: .1s;
     transition-property: background-color;
 
 }
@@ -52,9 +52,16 @@ button {
     background-color: #62c7e2;
 }
 
-button:hover {
-    border-width: 1px;
-    border-style: solid;
+.operand:hover {
+    background-color: #62c6e29f;
+}
+
+.operator:hover  {
+    background-color: #e27e6293;
+}
+
+.relation:hover {
+    background-color: #e27e6293;
 }
 
 #equals {
@@ -62,6 +69,6 @@ button:hover {
 }
 
 .buttonClicked {
-    background-color: rgb(196, 196, 196);
+    background-color: rgba(255, 255, 255, 0.514);
 }
 

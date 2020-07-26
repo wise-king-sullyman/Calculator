@@ -9,6 +9,7 @@ let operand1;
 let operand2;
 let operator;
 let lastCalcOverflow = 0;
+let lastCalc;
 
 let display = document.querySelector('#display')
 
@@ -38,8 +39,8 @@ let clearOps = () => {
 
 let addOperator = (e) => {
     if(lastCalcOverflow == 1) {
-        display.textContent = +operand1.toFixed(2)
-        lastCalcOverflow = 2;
+        display.textContent = +lastCalc.toFixed(2)
+        lastCalcOverflow = 0;
     };
 
     if(operator) {
@@ -56,9 +57,9 @@ let operate = () => {
         return operand1
     };
 
-    if(lastCalcOverflow && operator == "*") {
-        lastCalcOverflow = 0;
-        return ((Math.round(multiply(operand1,operand2))*100)/100)
+    if(lastCalc){
+        operand1 = lastCalc;
+        lastCalc = ""
     };
 
     switch(operator) {
@@ -88,7 +89,7 @@ let handleOperate = () => {
             display.textContent = operationResult.toFixed(10);
             lastCalcOverflow = 1;
             clearOps()
-            operand1 = operationResult;
+            lastCalc = operationResult;
             return
         }
         display.textContent = operationResult;
@@ -123,12 +124,15 @@ let logKey = e => {
 document.addEventListener("keydown",logKey);
 
 let removeCharFromDisplay = () => {
-    display.textContent = display.textContent.slice(0,-1);
+    if(display.textContent){
+        display.textContent = display.textContent.slice(0,-1);
+    };
 };
 
 let buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener("click",addClass))
 buttons.forEach(button => button.addEventListener("transitionend",remClass));
+buttons.forEach(button => button.addEventListener("transitioncancel",remClass));
 
 let operands = document.querySelectorAll('.operand');
 operands.forEach(operand => operand.addEventListener("click",addToDisplay));
