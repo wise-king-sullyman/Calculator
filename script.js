@@ -8,6 +8,7 @@ let operatorKeys = ["+","-","/","*"]
 let operand1;
 let operand2;
 let operator;
+let lastCalcOverflow = 0;
 
 let display = document.querySelector('#display')
 
@@ -21,8 +22,9 @@ let checkForDecimal = (e) => {
 };
 
 let addToDisplay = (e) => {
+    let charsInDisplay = display.textContent.length;
     if(checkForDecimal(e)){return;}
-    if(display.textContent.length > 12){return;}
+    if(charsInDisplay > 12){return;}
     display.textContent += e.target.textContent;
 };
 
@@ -35,17 +37,30 @@ let clearOps = () => {
 };
 
 let addOperator = (e) => {
+    if(lastCalcOverflow == 1) {
+        display.textContent = +operand1.toFixed(2)
+        lastCalcOverflow = 2;
+    };
+
     if(operator) {
         operand1 = operate() 
         display.textContent = operand1
-    }else {operand1 = display.textContent;}
+    }else {operand1 = display.textContent};
     addToDisplay(e)
     operator = e.target.id;
 };
 
 let operate = () => { 
     operand2 = display.textContent.slice(operand1.toString().length+1)
-    if(!operand2) {return operand1}
+    if(!operand2) {
+        return operand1
+    };
+
+    if(lastCalcOverflow && operator == "*") {
+        lastCalcOverflow = 0;
+        return ((Math.round(multiply(operand1,operand2))*100)/100)
+    };
+
     switch(operator) {
         case "+":
              return add(operand1,operand2);
@@ -69,9 +84,11 @@ let handleOperate = () => {
             clearOps()
             return
         }
-        if(operationResult.toString().length > 12){
-            display.textContent = operationResult.toFixed(12);
+        if(operationResult.toString().length > 10){
+            display.textContent = operationResult.toFixed(10);
+            lastCalcOverflow = 1;
             clearOps()
+            operand1 = operationResult;
             return
         }
         display.textContent = operationResult;
@@ -83,10 +100,19 @@ let itemInArray = (targetItem,array) => array.find(item => item == targetItem);
 
 let clickKey = id => document.getElementById(id).click();
 
-let logKey = (e) => {
+let addClass = e => e.target.classList.add("buttonClicked");
+
+let remClass = e => {
+    e.target.classList.remove("buttonClicked");
+};
+
+let logKey = e => {
     e.preventDefault();
     let key = e.key;
-    if(itemInArray(key,operandKeys)){clickKey(key)};
+    if(itemInArray(key,operandKeys)){
+        clickKey(key)
+
+    };
     if(itemInArray(key,operatorKeys)){clickKey(key)};
     if(key == 0){clickKey("0")}
     if(key == "Enter" || key == "="){clickKey("equals")};
@@ -99,6 +125,10 @@ document.addEventListener("keydown",logKey);
 let removeCharFromDisplay = () => {
     display.textContent = display.textContent.slice(0,-1);
 };
+
+let buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener("click",addClass))
+buttons.forEach(button => button.addEventListener("transitionend",remClass));
 
 let operands = document.querySelectorAll('.operand');
 operands.forEach(operand => operand.addEventListener("click",addToDisplay));

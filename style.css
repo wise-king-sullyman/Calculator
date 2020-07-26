@@ -43,22 +43,25 @@ button {
     font-size: x-large;
     box-sizing: border-box;
     border: none;
-    transition: .1s
+    transition: .2s;
+    transition-property: background-color;
+
 }
 
 .operand {
     background-color: #62c7e2;
 }
 
-.operand:hover {
-    background-color:rgb(84, 150, 212);
-}
-
 button:hover {
-    background-color: #a1482b
+    border-width: 1px;
+    border-style: solid;
 }
 
 #equals {
     height: 50%;
+}
+
+.buttonClicked {
+    background-color: rgb(196, 196, 196);
 }
 
