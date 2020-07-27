@@ -3,6 +3,7 @@ let subtract = (operand1,operand2) => operand1 - operand2;
 let multiply = (operand1,operand2) => operand1 * operand2;
 let divide = (operand1,operand2) => operand1 / operand2;
 
+let version = "0.99"
 let operandKeys = [00,0,1,2,3,4,5,6,7,8,9,"."];
 let operatorKeys = ["+","-","/","*"];
 let relationKeys = ["Enter","Delete","Backspace"];
@@ -138,6 +139,7 @@ let logKey = e => {
     if(itemInArray(key,operatorKeys)){clickKey(key)};
     if(itemInArray(key,relationKeys)){clickKey(key)};
     if(key == 0){clickKey("0")}
+    if(key == "v"){alert(`Version: ${version}`)}
 };
 
 document.addEventListener("keydown",logKey);
