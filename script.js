@@ -14,6 +14,7 @@ let operator;
 //operation may overflow the display
 let lastCalcOverflow = 0;
 let lastCalc;
+let lastDisplayed;
 
 let display = document.querySelector('#display')
 
@@ -27,9 +28,19 @@ let checkForDecimal = (e) => { //prevent "rouge decimals"
 };
 
 let addToDisplay = (e) => {
+    if(display.textContent == lastDisplayed &&
+        itemInArray(e.target.textContent,operandKeys)){
+            clearDisplay();
+            clearOps();
+            lastDisplayed = ""
+        };
+
     let charsInDisplay = display.textContent.length;
     if(checkForDecimal(e)){return;}
-    if(charsInDisplay > 12){return;}
+    if(charsInDisplay > 12){
+        display.classList.add("redBorder")
+        return;
+    }
     display.textContent += e.target.textContent;
 };
 
@@ -85,25 +96,30 @@ let operate = () => {
 let handleOperate = () => {
     if(operator) {
         let operationResult = operate();
+        console.log(operationResult)
+        opString = operationResult.toString();
+
         if(operationResult == "Infinity"){
             alert("No Breaking the Universe Allowed! (Can't Divide by 0")
             clearDisplay()
             clearOps()
             return
         }
-        if(operationResult.toString().length > 10){
-            display.textContent = operationResult.toFixed(10);
+        if(opString.indexOf('.') > -1){
+            display.textContent = operationResult.toFixed(14-opString.length);
             lastCalcOverflow = 1;
             clearOps()
             lastCalc = operationResult;
             return
         }
+
         if(operationResult > 9999999999999){
             display.textContent = 9999999999999
         };
 
         display.textContent = operationResult;
         clearOps();
+        lastDisplayed = display.textContent;
     }
 }
 
@@ -130,6 +146,7 @@ let removeCharFromDisplay = () => {
     if(display.textContent){
         display.textContent = display.textContent.slice(0,-1);
     };
+    clearOps();
 };
 
 let buttons = document.querySelectorAll('button');
@@ -155,3 +172,9 @@ clear.addEventListener("click", function(){
     clearOps()
 })
 
+display.addEventListener("transitioncancel",function() {
+    display.classList.remove('redBorder')
+});
+display.addEventListener("transitionend",function() {
+    display.classList.remove('redBorder')
+});
