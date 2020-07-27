@@ -143,13 +143,13 @@ operands.forEach(operand => operand.addEventListener("click",addToDisplay));
 let operators = document.querySelectorAll('.operator');
 operators.forEach(operator => operator.addEventListener("click",addOperator));
 
-let equals = document.getElementById("equals");
+let equals = document.getElementById("Enter");
 equals.addEventListener("click",handleOperate)
 
 let backspace  = document.getElementById("Backspace");
 backspace.addEventListener("click",removeCharFromDisplay)
 
-let clear = document.querySelector('#CLR');
+let clear = document.querySelector('#Delete');
 clear.addEventListener("click", function(){
     clearDisplay()
     clearOps()
