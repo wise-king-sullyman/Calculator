@@ -56,15 +56,11 @@ button {
     background-color: #62c6e29f;
 }
 
-.operator:hover  {
+.operator:hover, .relation:hover  {
     background-color: #e27e6293;
 }
 
-.relation:hover {
-    background-color: #e27e6293;
-}
-
-#equals {
+#Enter {
     height: 50%;
 }
 

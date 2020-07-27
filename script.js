@@ -3,17 +3,21 @@ let subtract = (operand1,operand2) => operand1 - operand2;
 let multiply = (operand1,operand2) => operand1 * operand2;
 let divide = (operand1,operand2) => operand1 / operand2;
 
-let operandKeys = [00,0,1,2,3,4,5,6,7,8,9,"."]
-let operatorKeys = ["+","-","/","*"]
+let operandKeys = [00,0,1,2,3,4,5,6,7,8,9,"."];
+let operatorKeys = ["+","-","/","*"];
+let relationKeys = ["Enter","Delete","Backspace"];
 let operand1;
 let operand2;
 let operator;
+
+//these variables are related to situations in which the result of the
+//operation may overflow the display
 let lastCalcOverflow = 0;
 let lastCalc;
 
 let display = document.querySelector('#display')
 
-let checkForDecimal = (e) => {
+let checkForDecimal = (e) => { //prevent "rouge decimals"
     let decimalLocation = display.textContent.lastIndexOf(".");
     if(e.target.textContent == "." &&
      decimalLocation > -1 &&
@@ -35,15 +39,17 @@ let clearOps = () => {
     operand1 = "";
     operand2 = "";
     operator = "";
+    lastCalc = "";
+
 };
 
 let addOperator = (e) => {
     if(lastCalcOverflow == 1) {
-        display.textContent = +lastCalc.toFixed(2)
-        lastCalcOverflow = 0;
+        display.textContent = +lastCalc.toFixed(2) //shorten operand1 to make
+        lastCalcOverflow = 0;                      //room for operand2
     };
 
-    if(operator) {
+    if(operator) { //handles if this is a continouation of a previous output
         operand1 = operate() 
         display.textContent = operand1
     }else {operand1 = display.textContent};
@@ -92,6 +98,10 @@ let handleOperate = () => {
             lastCalc = operationResult;
             return
         }
+        if(operationResult > 9999999999999){
+            display.textContent = 9999999999999
+        };
+
         display.textContent = operationResult;
         clearOps();
     }
@@ -103,22 +113,15 @@ let clickKey = id => document.getElementById(id).click();
 
 let addClass = e => e.target.classList.add("buttonClicked");
 
-let remClass = e => {
-    e.target.classList.remove("buttonClicked");
-};
+let remClass = e => e.target.classList.remove("buttonClicked");
 
 let logKey = e => {
-    e.preventDefault();
+    e.preventDefault();//stops firefox from opening a search
     let key = e.key;
-    if(itemInArray(key,operandKeys)){
-        clickKey(key)
-
-    };
+    if(itemInArray(key,operandKeys)){clickKey(key)};
     if(itemInArray(key,operatorKeys)){clickKey(key)};
+    if(itemInArray(key,relationKeys)){clickKey(key)};
     if(key == 0){clickKey("0")}
-    if(key == "Enter" || key == "="){clickKey("equals")};
-    if(key == "Delete"){clickKey("CLR")};
-    if(key == "Backspace"){clickKey(key)};
 };
 
 document.addEventListener("keydown",logKey);
